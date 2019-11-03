@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import sys
+import os
 import random
 import multiprocessing
 
@@ -27,9 +28,9 @@ def draw_triangle(i, triangle, target=None, color=None):
     if target is not None:
         color = np.median(target[rr,cc], axis=0) #  - np.median(i[rr,cc], axis=0)
     if color is not None:
-        i[rr, cc] +=  3 * color
+        i[rr, cc] += color
         #print(color)
-        i[rr, cc] /= 4
+        i[rr, cc] /= 2
     area = len(rr)
     return i, color, area
 
@@ -91,13 +92,13 @@ def main(_):
 
     current[:,:] = mean_color
 
-    high_res = np.zeros((1024, int(1024 * aspect_ratio), 3))
+    high_res = np.zeros((2000, int(2000 * aspect_ratio), 3))
     high_res[:,:] = mean_color
     last_rmse = rmse(current, img)
     mutation_rate = 0.5
-    filename = a["output_file"]
+    filename = os.path.basename(a["output_file"])
+    output_dir = os.path.dirname(a["output_file"])
     # todo: add SVG output
-    all_shapes = []
     for j in range(num_shapes):
         candidates = sum(pool.starmap(check_triangle, [(current, img, mutation_rate, last_rmse) for l in range(100)]), [])
         candidates.sort(key=lambda x: (x[0] - last_rmse) * (img.shape[0] * img.shape[1] - x[2] * j/num_shapes))
@@ -106,12 +107,10 @@ def main(_):
         print(f"step: {j}, rmse: {candidates[0][0]}, len(c)={len(candidates)}, area={area}")
         current, color, _ = draw_triangle(current, triangle, img)
         high_res, _, _ = draw_triangle(high_res, triangle, color=color)
-        #all_shapes.append((triangle, color))
-        #mutation_rate /= 2
-        #result = draw_high_res(mean_color, all_shapes, )
 
-        skimage.io.imsave(str(j) + "_" + filename, skimage.img_as_ubyte(high_res))
+        skimage.io.imsave(output_dir + "/" + str(j) + "_" + filename, skimage.img_as_ubyte(high_res))
 
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))
+
