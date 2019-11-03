@@ -12,9 +12,10 @@ import sklearn.metrics
 import numpy as np
 
 
-
-
 class SVG:
+    """
+    drawing to a SVG
+    """
     def __init__(self, backgroundcolor, shape):
         assert(len(shape) == 2)
         assert(len(backgroundcolor) == 3)
@@ -97,8 +98,6 @@ def check_triangle(current, img, mutation_rate, last_rmse):
             res.append((curr_rmse, t, area))
             last_rmse = curr_rmse
     return res
-
-
 
 
 def main(_):
