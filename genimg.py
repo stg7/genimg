@@ -27,6 +27,10 @@ class SVG:
         return "rgb(" + ",".join([str(int(256 * x)) for x in color]) + f")"
 
     def draw_triangle(self, triangle, color):
+        if triangle is None:
+            return
+        if color is None:
+            return
         assert(len(triangle) == 3)
         assert(len(color) == 3)
         self._triangles.append((triangle, color))
