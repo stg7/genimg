@@ -138,7 +138,8 @@ def main(_):
     mutation_rate = 0.5
     filename = os.path.basename(a["output_file"])
     output_dir = os.path.dirname(a["output_file"])
-    os.makedirs(output_dir, exist_ok=True)
+    if output_dir != "":
+        os.makedirs(output_dir, exist_ok=True)
 
     for j in range(num_shapes):
         candidates = sum(pool.starmap(check_triangle, [(current, img, mutation_rate, last_rmse) for l in range(100)]), [])
@@ -149,7 +150,12 @@ def main(_):
         current, color, _ = draw_triangle(current, triangle, img)
 
         svg_image.draw_triangle(triangle, color)
-        svg_image.store_svg(output_dir + "/" + str(j) + "_" + filename)
+        svg_image.store_svg(
+            os.path.join(
+                output_dir,
+                str(j) + "_" + filename
+            )
+        )
 
 
 if __name__ == "__main__":
