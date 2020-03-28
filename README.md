@@ -1,7 +1,8 @@
 # genimg
 
-This is a small project to create some artistic images.
+This is a small project to create some artificial images.
 Starting from a high resolution image, an approximation using triangles is estimated.
+This is similar to [primitive](https://github.com/fogleman/primitive), however this script creates SVG images and uses a different approach.
 
 ## Usage
 
@@ -34,13 +35,16 @@ You can just use one of the provided example images and run the following comman
 ```bash
 ./genimg.py example_images/rome.jpg
 ```
-It will use the following images
+It will use the following image
 ![](./example_images/rome.jpg)
 
 to create a generated SVG depending on the number of iterations, similar to this:
 
-![](./generated/rome_.svg)
+[SVG](./generated/664_rome.svg)
 
+![](./generated/664_rome.jpg)
+
+after 664 iterations.
 
 
 
